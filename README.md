@@ -4,13 +4,13 @@ A multi-agent system that autonomously handles doctor appointment bookings via n
 
 ## Core Components
 
-1.  **Natural Language Processing (Gemini API)**
+1.  **Natural Language Processing (Groq API)**
     *   **Purpose**: Understand free-form user requests.
     *   **Action**: Extracts key details (doctor name, specialty, date/time).
     *   **Output**: Structured JSON (e.g., `{"specialty": "dentist", "date": "2024-08-15", "time": "15:00"}`).
 
 2.  **Multi-Agent Workflow (Conceptual - Implemented via CoordinatorAgent)**
-    *   **CoordinatorAgent**: Parses requests using Gemini and routes to the `DatabaseAgent`.
+    *   **CoordinatorAgent**: Parses requests using llm and routes to the `DatabaseAgent`.
     *   **DatabaseAgent**: Manages `doctor_availability.csv` for querying, booking, and canceling appointments.
 
 3.  **Backend (FastAPI)**
@@ -39,7 +39,7 @@ A multi-agent system that autonomously handles doctor appointment bookings via n
 2.  **Request Forwarding**: Streamlit sends the request to the FastAPI backend (`/book` endpoint).
 3.  **Request Parsing & Handling**: 
     *   The `CoordinatorAgent` in FastAPI receives the request.
-    *   It uses the `nlp_processor` (Gemini API) to convert the natural language text to structured data (action, entities like date, time, doctor, specialty).
+    *   It uses the `nlp_processor` (Groq API) to convert the natural language text to structured data (action, entities like date, time, doctor, specialty).
 4.  **Database Interaction**: 
     *   Based on the parsed action, the `CoordinatorAgent` calls the appropriate method in `DatabaseAgent`.
         *   **Check Availability**: `DatabaseAgent` scans `doctor_availability.csv`.
@@ -86,7 +86,7 @@ A multi-agent system that autonomously handles doctor appointment bookings via n
         # Optional: If your backend runs on a different URL for Streamlit
         # BACKEND_URL="http://your_fastapi_host:port"
         ```
-    *   Replace `"YOUR_GEMINI_API_KEY_HERE"` with your actual API key.
+    *   Replace `"YOUR_GROQ_API_KEY_HERE"` with your actual API key.
 
 5.  **Ensure `data/doctor_availability.csv` exists.**
     *   If it doesn't exist, the `DatabaseAgent` (when first run, e.g., via `database_agent.py` directly or when the FastAPI app starts) is designed to create a dummy `doctor_availability.csv` file in the `data` directory.
